@@ -9,7 +9,7 @@ import java.util.List;
  * Representation of the OpenWeatherMap.org /weather response
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OpenWeatherCityDto {
+public class OpenWeatherMapWeatherDto {
     public List<WeatherConditionDto> weather;
 
     public MainDto main;

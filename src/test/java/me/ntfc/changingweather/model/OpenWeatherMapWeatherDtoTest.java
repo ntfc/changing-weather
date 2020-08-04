@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static me.ntfc.changingweather.model.OpenWeatherCityDto.WeatherCondition.DRIZZLE;
+import static me.ntfc.changingweather.model.OpenWeatherMapWeatherDto.WeatherCondition.DRIZZLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class OpenWeatherCityDtoTest {
+class OpenWeatherMapWeatherDtoTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -21,7 +21,7 @@ class OpenWeatherCityDtoTest {
     @Test
     void parseLondonWeatherUsingSpringObjectMapper() throws Exception {
         String json = Files.readString(Path.of(getClass().getResource("/london_weather.json").toURI()));
-        OpenWeatherCityDto dto = objectMapper.readValue(json, OpenWeatherCityDto.class);
+        OpenWeatherMapWeatherDto dto = objectMapper.readValue(json, OpenWeatherMapWeatherDto.class);
 
         assertNotNull(dto);
         assertEquals(1, dto.weather.size());

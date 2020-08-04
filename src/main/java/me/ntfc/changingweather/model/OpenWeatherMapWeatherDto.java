@@ -2,6 +2,7 @@ package me.ntfc.changingweather.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.List;
 
@@ -30,13 +31,26 @@ public class OpenWeatherMapWeatherDto {
      * Values taken from https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
      */
     public enum WeatherCondition {
-        THUNDERSTORM,
-        DRIZZLE,
-        RAIN,
-        SNOW,
-        ATMOSPHERE,
-        CLEAR,
-        CLOUDS,
+        THUNDERSTORM("Thunderstorm"),
+        DRIZZLE("Drizzle"),
+        RAIN("Rain"),
+        SNOW("Snow"),
+        ATMOSPHERE("Atmosphere"),
+        CLEAR("Clear"),
+        CLOUDS("Clouds"),
         ;
+
+        private final String description;
+
+        WeatherCondition(String description) {
+            this.description = description;
+        }
+
+        @JsonValue
+        public String getDescription() {
+            return description;
+        }
+
+
     }
 }

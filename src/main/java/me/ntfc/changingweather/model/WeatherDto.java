@@ -9,4 +9,13 @@ public class WeatherDto {
     public Double pressure;
 
     public boolean umbrella;
+
+    public WeatherDto() {
+    }
+
+    public WeatherDto(Double temperature, Double pressure, boolean umbrella) {
+        this.temperature = temperature;
+        this.pressure = pressure;
+        this.umbrella = umbrella;
+    }
 }

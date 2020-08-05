@@ -25,9 +25,9 @@ class OpenWeatherMapWeatherDtoTest {
 
         assertNotNull(dto);
         assertEquals(1, dto.weather.size());
-        assertEquals(DRIZZLE, dto.weather.get(0).condition);
+        assertEquals(DRIZZLE, dto.weather.get(0).getCondition());
 
-        assertEquals(280.32, dto.main.temperature);
-        assertEquals(1012, dto.main.pressure);
+        assertEquals(280.32, dto.main.getTemperature());
+        assertEquals(1012, dto.main.getPressure());
     }
 }

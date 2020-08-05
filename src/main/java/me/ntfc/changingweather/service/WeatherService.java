@@ -7,6 +7,8 @@ import me.ntfc.changingweather.model.WeatherDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class WeatherService {
@@ -15,14 +17,22 @@ public class WeatherService {
 
     private final WeatherDtoMapper weatherDtoMapper;
 
-    public WeatherService(final OpenWeatherMapClient weatherClient, final WeatherDtoMapper weatherDtoMapper) {
+    private final HistoricalWeatherService historicalWeatherService;
+
+    public WeatherService(final OpenWeatherMapClient weatherClient, final WeatherDtoMapper weatherDtoMapper, final HistoricalWeatherService historicalWeatherService) {
         this.weatherClient = weatherClient;
         this.weatherDtoMapper = weatherDtoMapper;
+        this.historicalWeatherService = historicalWeatherService;
     }
 
-    public WeatherDto getWeatherForCity(List<String> cityInfo) {
+    public Optional<WeatherDto> getWeatherForCity(List<String> cityInfo) {
         OpenWeatherMapResponseDto weatherForCity = weatherClient.getWeatherForCity(cityInfo);
 
-        return weatherDtoMapper.fromOpenWeatherMapWeatherDto(weatherForCity);
+        WeatherDto responseDto = weatherDtoMapper.fromOpenWeatherMapWeatherDto(weatherForCity);
+
+        // async collect historical data
+        CompletableFuture.runAsync(() -> historicalWeatherService.collect(cityInfo, responseDto));
+
+        return Optional.of(responseDto);
     }
 }

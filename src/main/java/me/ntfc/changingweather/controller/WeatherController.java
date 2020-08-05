@@ -1,6 +1,8 @@
 package me.ntfc.changingweather.controller;
 
+import me.ntfc.changingweather.model.HistoricalWeatherDto;
 import me.ntfc.changingweather.model.WeatherDto;
+import me.ntfc.changingweather.service.HistoricalWeatherService;
 import me.ntfc.changingweather.service.WeatherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +17,20 @@ import java.util.List;
 public class WeatherController {
 
     private final WeatherService weatherService;
+    private final HistoricalWeatherService historicalWeatherService;
 
-    public WeatherController(WeatherService weatherService) {
+    public WeatherController(final WeatherService weatherService, final HistoricalWeatherService historicalWeatherService) {
         this.weatherService = weatherService;
+        this.historicalWeatherService = historicalWeatherService;
     }
 
     @GetMapping("/current")
-    public ResponseEntity<WeatherDto> getWeatherForCity(@RequestParam(value = "location") List<String> cityInfo) {
-        return ResponseEntity.ok(weatherService.getWeatherForCity(cityInfo));
+    public ResponseEntity<WeatherDto> getWeatherForCity(@RequestParam("location") List<String> cityInfo) {
+        return ResponseEntity.of(weatherService.getWeatherForCity(cityInfo));
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<HistoricalWeatherDto> getHistoricalWeatherForCity(@RequestParam("location") List<String> cityInfo) {
+        return ResponseEntity.of(historicalWeatherService.getHistory(cityInfo));
     }
 }

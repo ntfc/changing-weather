@@ -2,7 +2,7 @@ package me.ntfc.changingweather.service;
 
 import me.ntfc.changingweather.client.OpenWeatherMapClient;
 import me.ntfc.changingweather.mapper.WeatherDtoMapper;
-import me.ntfc.changingweather.model.OpenWeatherMapWeatherDto;
+import me.ntfc.changingweather.model.OpenWeatherMapResponseDto;
 import me.ntfc.changingweather.model.WeatherDto;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class WeatherService {
     }
 
     public WeatherDto getWeatherForCity(String city) {
-        OpenWeatherMapWeatherDto weatherForCity = weatherClient.getWeatherForCity(city);
+        OpenWeatherMapResponseDto weatherForCity = weatherClient.getWeatherForCity(city);
 
         return weatherDtoMapper.fromOpenWeatherMapWeatherDto(weatherForCity);
     }

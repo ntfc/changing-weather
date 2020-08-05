@@ -1,43 +1,29 @@
 package me.ntfc.changingweather.mapper;
 
-import me.ntfc.changingweather.model.OpenWeatherMapWeatherDto;
-import me.ntfc.changingweather.model.OpenWeatherMapWeatherDto.WeatherConditionDto;
+import me.ntfc.changingweather.model.OpenWeatherMapResponseDto;
+import me.ntfc.changingweather.model.OpenWeatherMapResponseDto.WeatherCondition;
 import me.ntfc.changingweather.model.WeatherDto;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-import static me.ntfc.changingweather.model.OpenWeatherMapWeatherDto.WeatherCondition.DRIZZLE;
-import static me.ntfc.changingweather.model.OpenWeatherMapWeatherDto.WeatherCondition.RAIN;
-import static me.ntfc.changingweather.model.OpenWeatherMapWeatherDto.WeatherCondition.THUNDERSTORM;
+import static me.ntfc.changingweather.model.OpenWeatherMapResponseDto.WeatherCondition.DRIZZLE;
+import static me.ntfc.changingweather.model.OpenWeatherMapResponseDto.WeatherCondition.RAIN;
+import static me.ntfc.changingweather.model.OpenWeatherMapResponseDto.WeatherCondition.THUNDERSTORM;
 
 @Component
 public class WeatherDtoMapper {
 
-    public WeatherDto fromOpenWeatherMapWeatherDto(final OpenWeatherMapWeatherDto openWeatherMapWeatherDto) {
+    public WeatherDto fromOpenWeatherMapWeatherDto(final OpenWeatherMapResponseDto openWeatherMapResponseDto) {
         return new WeatherDto(
-                openWeatherMapWeatherDto.main.getTemperature(),
-                openWeatherMapWeatherDto.main.getPressure(),
-                needsUmbrella(openWeatherMapWeatherDto.weather)
+                openWeatherMapResponseDto.getTemperature(),
+                openWeatherMapResponseDto.getPressure(),
+                needsUmbrella(openWeatherMapResponseDto.getWeatherCondition())
         );
     }
 
     /**
-     * Checks if a given WeatherConditionDto from OpenWeatherMap API requires an umbrella or not.
-     *
-     * Methods receives a {@code List<WeatherConditionDto>} since the OpenWeatherMap API can also more than one weather
-     * condition, even though the first one is the primary:
-     *
-     * > NOTE: It is possible to meet more than one weather condition for a requested location. The first weather
-     * > condition in API respond is primary.
-     * >
-     * > Source: https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
+     * Checks if a given WeatherCondition from OpenWeatherMap API requires an umbrella or not.
      */
-    private boolean needsUmbrella(List<WeatherConditionDto> weatherConditions) {
-        return weatherConditions.stream()
-                .findFirst()
-                .map(WeatherConditionDto::getCondition)
-                .map(it -> it == DRIZZLE || it == RAIN || it == THUNDERSTORM)
-                .orElse(false);
+    private boolean needsUmbrella(final WeatherCondition weatherConditions) {
+        return weatherConditions == DRIZZLE || weatherConditions == RAIN || weatherConditions == THUNDERSTORM;
     }
 }

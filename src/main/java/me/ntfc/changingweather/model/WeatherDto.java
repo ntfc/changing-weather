@@ -3,19 +3,44 @@ package me.ntfc.changingweather.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class WeatherDto {
+
     @JsonProperty("temp")
-    public Double temperature;
+    private Double temperature;
 
-    public Double pressure;
+    private Integer pressure;
 
-    public boolean umbrella;
+    private boolean umbrella;
 
     public WeatherDto() {
     }
 
-    public WeatherDto(Double temperature, Double pressure, boolean umbrella) {
+    public WeatherDto(Double temperature, Integer pressure, boolean umbrella) {
         this.temperature = temperature;
         this.pressure = pressure;
+        this.umbrella = umbrella;
+    }
+
+    public Double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
+    }
+
+    public Integer getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(Integer pressure) {
+        this.pressure = pressure;
+    }
+
+    public boolean isUmbrella() {
+        return umbrella;
+    }
+
+    public void setUmbrella(boolean umbrella) {
         this.umbrella = umbrella;
     }
 }

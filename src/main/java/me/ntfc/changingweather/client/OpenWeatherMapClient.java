@@ -1,7 +1,7 @@
 package me.ntfc.changingweather.client;
 
 import me.ntfc.changingweather.config.OpenWeatherMapProperties;
-import me.ntfc.changingweather.model.OpenWeatherMapWeatherDto;
+import me.ntfc.changingweather.model.OpenWeatherMapResponseDto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,7 +20,7 @@ public class OpenWeatherMapClient {
         this.openWeatherMapProperties = openWeatherMapProperties;
     }
 
-    public OpenWeatherMapWeatherDto getWeatherForCity(final String city) {
+    public OpenWeatherMapResponseDto getWeatherForCity(final String city) {
         URI uri = UriComponentsBuilder.fromUri(openWeatherMapProperties.getWeatherEndpointUri())
                 .queryParam("appid", openWeatherMapProperties.getAppId())
                 .queryParam("q", city)
@@ -28,7 +28,7 @@ public class OpenWeatherMapClient {
                 .toUri();
 
         return restTemplate
-                .getForEntity(uri, OpenWeatherMapWeatherDto.class)
+                .getForEntity(uri, OpenWeatherMapResponseDto.class)
                 .getBody();
     }
 }

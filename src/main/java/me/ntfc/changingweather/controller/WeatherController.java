@@ -21,7 +21,7 @@ public class WeatherController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<WeatherDto> getWeatherForCity(@RequestParam(value = "q") List<String> cityInfo) {
+    public ResponseEntity<WeatherDto> getWeatherForCity(@RequestParam(value = "location") List<String> cityInfo) {
         return ResponseEntity.ok(weatherService.getWeatherForCity(cityInfo));
     }
 }

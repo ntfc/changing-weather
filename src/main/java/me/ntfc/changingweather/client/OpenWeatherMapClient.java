@@ -26,9 +26,19 @@ public class OpenWeatherMapClient {
     }
 
     public OpenWeatherMapResponseDto getWeatherForCity(final List<String> cityInfo) {
-        URI uri = UriComponentsBuilder.fromUri(openWeatherMapProperties.getWeatherEndpointUri())
-                .queryParam("q", String.join(",", cityInfo))
-                .queryParam("units", "metric")
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUri(openWeatherMapProperties.getWeatherEndpointUri())
+                .queryParam("q", String.join(",", cityInfo));
+
+        if (!openWeatherMapProperties.getWeatherEndpointUri().getHost().contains("samples.openweathermap.org")) {
+            uriBuilder.queryParam("units", "metric");
+        } else {
+            LOGGER.info("Using OpenWeatherMap sample API; skipping conversion to metric units");
+        }
+
+        LOGGER.info("GET {}", uriBuilder.toUriString());
+
+        URI uri = uriBuilder
                 .queryParam("appid", openWeatherMapProperties.getAppId())
                 .build()
                 .toUri();

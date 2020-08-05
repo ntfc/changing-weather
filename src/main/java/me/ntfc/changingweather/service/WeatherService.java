@@ -6,6 +6,8 @@ import me.ntfc.changingweather.model.OpenWeatherMapResponseDto;
 import me.ntfc.changingweather.model.WeatherDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WeatherService {
 
@@ -18,8 +20,8 @@ public class WeatherService {
         this.weatherDtoMapper = weatherDtoMapper;
     }
 
-    public WeatherDto getWeatherForCity(String city) {
-        OpenWeatherMapResponseDto weatherForCity = weatherClient.getWeatherForCity(city);
+    public WeatherDto getWeatherForCity(List<String> cityInfo) {
+        OpenWeatherMapResponseDto weatherForCity = weatherClient.getWeatherForCity(cityInfo);
 
         return weatherDtoMapper.fromOpenWeatherMapWeatherDto(weatherForCity);
     }

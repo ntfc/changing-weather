@@ -28,7 +28,7 @@ public class HistoricalWeatherService {
         String city = String.join(",", cityInfo);
 
         historicalData.computeIfPresent(city, (key, history) -> {
-            history.getHistory().add(weatherForCity);
+            history.getHistory().addFirst(weatherForCity); // head insertion
             double averagePressure = history.getHistory().stream()
                     .limit(5)
                     .map(WeatherDto::getPressure)
@@ -49,9 +49,9 @@ public class HistoricalWeatherService {
 
         historicalData.computeIfAbsent(city, key -> {
             HistoricalWeatherDto history = new HistoricalWeatherDto();
+            history.getHistory().addFirst(weatherForCity); // head insertion
             history.setAveragePressure(weatherForCity.getPressure().doubleValue());
             history.setAverageTemperature(weatherForCity.getTemperature());
-            history.getHistory().add(weatherForCity);
             return history;
         });
 

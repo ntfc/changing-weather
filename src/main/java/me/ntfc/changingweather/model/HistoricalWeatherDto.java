@@ -2,9 +2,7 @@ package me.ntfc.changingweather.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class HistoricalWeatherDto {
     @JsonProperty("avg_temp")
@@ -13,7 +11,7 @@ public class HistoricalWeatherDto {
     @JsonProperty("avg_pressure")
     private Double averagePressure;
 
-    private List<WeatherDto> history = new LinkedList<>();
+    private LinkedList<WeatherDto> history = new LinkedList<>();
 
     public Double getAverageTemperature() {
         return averageTemperature;
@@ -31,11 +29,11 @@ public class HistoricalWeatherDto {
         this.averagePressure = averagePressure;
     }
 
-    public List<WeatherDto> getHistory() {
+    public LinkedList<WeatherDto> getHistory() {
         return history;
     }
 
-    public void setHistory(List<WeatherDto> history) {
+    public void setHistory(LinkedList<WeatherDto> history) {
         this.history = history;
     }
 }

@@ -73,7 +73,7 @@ The application is designed as follows:
 2. Before sending back the response to the client, an asynchronous call is made to the "`HistoricalWeatherService`" so that the query history is collected
     * For simplicity's sake, the history is stored in memory and it does not survive application restarts.
     * `Berlin` and `Berlin,de` will be considered different cities
-    * The complete query history is stored in a `LinkedList` to take advantage of head insertions (in order to calculate averages of last X queries)
+    * The complete query history is stored in a `LinkedList` to take advantage of head insertions (in order to calculate averages of last X queries, only the first X elements need to be retrieved from the list)
 3. When a `/weather/history` is issued, the (in memory) contents of the `HistoricalWeatherService` are shown to the client
 
 ## What is missing to be production ready

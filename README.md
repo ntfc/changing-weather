@@ -4,7 +4,7 @@
 
 There is the option of running the application against the sample OpenWeatherMap API, but that will always returns the same result and will not provide meaningful results.
 
-In order to use the OpenWeatherMap.org API you must register and then obtain an application ID token (referred below as the `app-id`). 
+In order to use the OpenWeatherMap.org API you must [register](https://openweathermap.org/) an account, and then obtain an application ID token (referred below as the `app-id`). 
 
 The application can be built and executed locally using `Maven` with:
 ```shell script

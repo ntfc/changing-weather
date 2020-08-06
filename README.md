@@ -20,7 +20,7 @@ Once the application is up and running the follow options are available:
 
 `GET /weather/current?location={city name},{state code},{country code}`
 
-Retrieves the current temperature in a given city, and additional information if you need to bring an umbrella.
+Retrieves the current temperature (in degrees celsius) and air pressure (in `hPa`) in a given city, and additional information if you need to bring an umbrella.
 
 Example:
 ```shell

@@ -144,3 +144,7 @@ The following AWS infrastructure would be needed (maintained via Terraform):
 * AWS Secrets Manager to securely store secrets such as API keys
 
 The `jar` artifact could be uploaded to S3 on every push to `master`, and whenever a new EC2 instance is created via Terraform the `jar` artifact is pulled from S3, copied to the fresh EC2 instance, and executed via `java -jar` (and with the proper environment variables set).
+
+# Other random thoughts
+
+* The temperature/pressure units could be returned in the JSON response with something like `{"temperature": {"value": 100, units: "celsius"}`

@@ -69,7 +69,7 @@ Note that `city name`, `state code` and `country code` are the same as specified
 
 The application is designed as follows:
 
-1. When a `/weather/current` is issued, the request is essentially forwarded to OpenWeatherApi.org and the response is show back to the client (in a different JSON format)
+1. When a `/weather/current` is issued, the request is essentially forwarded to OpenWeatherMap.org API and the response is show back to the client (in a different JSON format)
 2. Before sending back the response to the client, an asynchronous call is made to the "`HistoricalWeatherService`" so that the query history is collected
     * For simplicity's sake, the history is stored in memory and it does not survive application restarts.
     * `Berlin` and `Berlin,de` will be considered different cities
@@ -131,5 +131,16 @@ However, they don't account for more complicated error scenarios that might occu
 
 ## How to deploy application to AWS
 
-TODO
-  
+**NOTE:** a lot of things down here are (probably wrong) assumptions!
+
+A simple EC2 based deployment strategy is used since using container orchestration tools (e.g. kubernetes) might be too complex for such simple application. 
+
+The following AWS infrastructure would be needed (maintained via Terraform):
+
+* One or more EC2 instances where the web application gets deployed
+* An ELB to expose the HTTP API to clients
+    * since application is deployed to EC2, probably would use the Classic Load Balancer
+* A DynamoDB database where the data is persisted
+* AWS Secrets Manager to securely store secrets such as API keys
+
+The `jar` artifact could be uploaded to S3 on every push to `master`, and whenever a new EC2 instance is created via Terraform the `jar` artifact is pulled from S3, copied to the fresh EC2 instance, and executed via `java -jar` (and with the proper environment variables set).

@@ -78,13 +78,58 @@ The application is designed as follows:
 
 ## What is missing to be production ready
 
-TODO
+- Persist historical data
+- Error handling
+- Dealing with Secrets
+- Testing
+
+### Persist historical data
+
+Persisting historical data would allow the application to survive application restarts.
+
+If the persistent volume is external to the application (filesystem, database, key-value store, etc), and since the application would then become stateless, it would be possible to horizontally scale the application by deploying more instances of it if needed (assuming storage mechanism supports that, and the infrastructure is ready for the load balancing between instances).
+
+This would also enable the application to be gradually deployed (e.g. canary deployments) in order to deploy new versions without downtime.
+
+A NoSQL database sounds like a good candidate for persistence.
+In order to add that, a couple of changes have to be made around the `HistoricalWeatherService` so that it can read and write data to such database.
+
+### Error handling
+
+Besides the error handling facilities provided by Spring Boot, not much was added to prevent, or deal with, illegal calls to the OpenWeatherMap API.
+
+For example, when issuing a `GET /weather/current?location=Berlin,pt` (note that country is not `de`) the OpenWeatherMap API responds with a `404 Not Found` error.
+There are two ways on how this error could be dealt with:
+1. The `OpenWeatherMapClient` throws a runtime `CityNotFoundException`, that is then dealt by either the `Service` class, or at the Spring level using exception handlers, for example.
+    * requires more work, but better results for the API client (more detailed error messages)
+2. The `OpenWeatherMapClient` would return an `Optional` result, and the Service/Controller classes would return either a generic error message if the `Optional` is empty
+    * requires less work, but very artificial error messages to the client. The actual error could be logged to help with further troubleshooting
+
+Ideally, this application would be able to map such errors from OpenWeatherMap and wrap them in a common format (such as the one offered by Spring Boot).
+
+### Dealing with Secrets
+
+The OpenWeatherMap API key (or `app-id`) should be stored in a secret store, and retrieved at runtime only (via environments variable for example).
+
+At the moment, the `app-id` can be supplied via environment variables using Spring Boot's [externalized configuration](https://docs.spring.io/spring-boot/docs/2.3.2.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config), but they must reside on the local machine.
+
+AWS Secrets, or Hashicorp Vault, are examples of commonly used mechanisms for secret management in production systems.
+
+### Increase testing coverage and quality
+
+The provided unit tests give some assurance that some basic features are working:
+
+* parsing of OpenWeatherMap API responses is correct
+* getting the current weather in a certain city will _call_ the `HistoricalWeatherService`
+* calling the `HistoricalWeatherService` six times (with the same city) will return the average pressure/temperature of the last five queries, and the whole six weather results
+
+However, they don't account for more complicated error scenarios that might occur such as:
+
+* What if `pressure` (from OpenWeatherMap API) is returned as a decimal number?
+* The OpenWeatherMap API throws an error, and that is not propagated (as mentioned in the _Error handling_ section)
+
 
 ## How to deploy application to AWS
 
 TODO
   
-# Limitations and future work
-
-* In memory
-* Average calculation done at insertion time is not necessary. Since an efficient structure is used, that could be done whenever the client request the historical data
